@@ -7,19 +7,29 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.Locale;
+import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
+public class voiceinput extends AppCompatActivity {
 
     private TextView txvResult;
+    private Button backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.voiceinput);
         txvResult = (TextView) findViewById(R.id.txvResult);
+        backBtn = (Button) findViewById(R.id.backbtn);
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(voiceinput.this, menu.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void getSpeechInput(View view){

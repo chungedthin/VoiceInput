@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".voiceinput">
 
     <TextView
         android:id="@+id/txvResult"
@@ -23,9 +23,19 @@
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="90dip"
         android:gravity="center"
         android:onClick="getSpeechInput"
         android:src="@drawable/mic"/>
+
+    <Button
+        android:id="@+id/backbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btnSpeak"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-66dp"
+        android:text="Back" />
+
 
 </RelativeLayout>
