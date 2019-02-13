@@ -13,6 +13,7 @@ public class register extends AppCompatActivity {
 
     private EditText username;
     private EditText password;
+    private EditText email;
     private Button registerBtn;
 
     @Override
@@ -22,6 +23,7 @@ public class register extends AppCompatActivity {
 
         username = (EditText)findViewById(R.id.username);
         password = (EditText)findViewById(R.id.password);
+        email = (EditText)findViewById(R.id.email);
         registerBtn = (Button) findViewById(R.id.registerbtn);
 
         registerBtn.setOnClickListener(new View.OnClickListener() {

@@ -15,6 +15,7 @@ public class voiceinput extends AppCompatActivity {
 
     private TextView txvResult;
     private Button backBtn;
+    private String speech;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,7 @@ public class voiceinput extends AppCompatActivity {
                 if(resultCode == RESULT_OK && data != null){
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     txvResult.setText(result.get(0));
+                    speech = txvResult.getText() .toString();
                 }
                 break;
         }

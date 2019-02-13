@@ -14,10 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".register_success"></activity>
-        <activity android:name=".howtoplay" />
+        <activity android:name=".howtoplay"
+            android:label="How To Play"/>
         <activity android:name=".register" />
-        <activity android:name=".review" />
-        <activity android:name=".voiceinput" />
+        <activity android:name=".review"
+            android:label="Review"/>
+
+        <activity android:name=".voiceinput"
+            android:label="Voice Input"/>
+
         <activity
             android:name=".login"
             android:label="@string/title_activity_login">
@@ -29,7 +34,7 @@
         </activity>
         <activity
             android:name=".menu"
-            android:label="@string/title_activity_login" />
+            android:label="Menu"/>
     </application>
 
 </manifest>
