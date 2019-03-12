@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.util.Log;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -22,7 +23,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -86,7 +86,7 @@ public class register extends AppCompatActivity {
         //...
     }
 
-    private void registerUser(final String email, final String username, final String password) {
+    private void registerUser(final String username, final String password, final String email) {
         progressDialog.setMessage( "Registering user...");
         progressDialog.show();
 
@@ -99,16 +99,7 @@ public class register extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             Toast.makeText(getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_LONG).show();
-                            JSONObject parent = jsonObject.getJSONObject("Success");
-                            String value = parent.getJSONObject("message").toString();
-                             if(parent.equals("success")){
-                                 // register success jump to next page
-                                 Intent intent = new Intent(register.this, register_success.class);
-                                 startActivity(intent);
-                             }else {
-                                 // fail
-                             }
-                        } catch (JSONException e) {
+                        } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
