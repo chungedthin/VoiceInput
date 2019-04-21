@@ -8,33 +8,38 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import android.app.ProgressDialog;
 import android.widget.Button;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONArray;
+
 
 public class voiceinput extends AppCompatActivity {
 
     private TextView txvResult;
+    private TextView txvComment;
     private Button backBtn;
     private String speech;
+    private ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.voiceinput);
         txvResult = (TextView) findViewById(R.id.txvResult);
-        backBtn = (Button) findViewById(R.id.backbtn);
-
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(voiceinput.this, menu.class);
-                startActivity(intent);
-            }
-        });
+        txvComment = (TextView) findViewById(R.id.txvComment);
     }
 
     public void getSpeechInput(View view){
-
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
@@ -57,8 +62,54 @@ public class voiceinput extends AppCompatActivity {
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     txvResult.setText(result.get(0));
                     speech = txvResult.getText() .toString();
+                    CallWebService();
                 }
                 break;
         }
+    }
+
+    private void CallWebService(){
+    StringRequest stringRequest = new StringRequest(
+            Request.Method.POST,
+            Constants.URL_KEYWORD,
+            new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response){
+                    try{
+                        JSONArray arr = new JSONArray(response);
+                        if(arr!=null){
+                            JSONObject obj = arr.getJSONObject(0);
+                                String type = obj.getString("type");
+                                txvComment.setText(type);
+                            }
+
+                } catch (JSONException e) {
+                        // unexpected response
+                        e.printStackTrace();
+                    }
+                }
+            },
+            new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    progressDialog.dismiss();
+                    Toast.makeText(
+                            getApplicationContext(),
+                            error.getMessage(),
+                            Toast.LENGTH_LONG
+                    ).show();
+                }
+            }
+        ){
+        @Override
+        protected Map<String, String> getParams(){
+            Map<String, String> params = new HashMap<>();
+            params.put("s", speech);
+            return params;
+        }
+
+        };
+         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
+
     }
 }

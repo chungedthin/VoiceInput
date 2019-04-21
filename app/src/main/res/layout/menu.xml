@@ -25,6 +25,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="How to play" />
+    <Button
+        android:id="@+id/tutorialbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tutorial" />
 
     <Button
         android:id="@+id/logoutbtn"

@@ -17,6 +17,16 @@
         android:textSize="26sp"
         android:textStyle="normal"/>
 
+    <TextView
+        android:id="@+id/txvComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="200dp"
+        android:textSize="26sp"
+        android:textStyle="normal"/>
+
     <ImageView
         android:id="@+id/btnSpeak"
         android:layout_width="100dp"
@@ -28,14 +38,6 @@
         android:onClick="getSpeechInput"
         android:src="@drawable/mic"/>
 
-    <Button
-        android:id="@+id/backbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/btnSpeak"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="-66dp"
-        android:text="Back" />
 
 
 </RelativeLayout>
