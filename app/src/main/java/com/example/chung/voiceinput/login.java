@@ -44,7 +44,6 @@ public class login extends AppCompatActivity implements View.OnClickListener {
                 register();
             }
         });
-
         if(SharedPrefManager.getInstance(this).isLoggedIn()){
             finish();
             startActivity(new Intent(this, menu.class));

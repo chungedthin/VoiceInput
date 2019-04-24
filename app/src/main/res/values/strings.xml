@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">VoiceInput</string>
+    <string name="app_name">Whatever</string>
     <string name="title_activity_login">Sign in</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -13,6 +13,6 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_howtoplay">howtoplay</string>
-    <string name="title_activity_tutorial">tutorial</string>
+    <string name="title_activity_howtoplay">How to play</string>
+    <string name="title_activity_tutorial">Tutorial</string>
 </resources>

@@ -128,11 +128,5 @@ public class register extends AppCompatActivity {
 
     }
 
-   /* @Override
-    public void onClick(View view) {
-        if (view == buttonRegister)
-            registerUser();
-        if(view == textViewLogin)
-            startActivity(new Intent(this, LoginActivity.class));
-    }*/
+
 }
