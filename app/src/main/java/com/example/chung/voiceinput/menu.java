@@ -13,6 +13,7 @@ public class menu extends AppCompatActivity {
     private Button howToPlayBtn;
     private Button logoutBtn;
     private Button tutorialBtn;
+    private Button quizBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,10 +21,10 @@ public class menu extends AppCompatActivity {
         setContentView(R.layout.menu);
 
         startBtn = (Button) findViewById(R.id.startbtn);
-        reviewBtn = (Button) findViewById(R.id.reviewbtn);
         howToPlayBtn = (Button) findViewById(R.id.howtoplaybtn);
         logoutBtn = (Button) findViewById(R.id.logoutbtn);
         tutorialBtn = (Button) findViewById(R.id.tutorialbtn);
+        quizBtn = (Button) findViewById(R.id.quizbtn);
 
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,13 +34,6 @@ public class menu extends AppCompatActivity {
             }
         });
 
-        reviewBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(menu.this, review.class);
-                startActivity(intent);
-            }
-        });
 
         howToPlayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +57,13 @@ public class menu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(menu.this,tutorial.class));
+            }
+        });
+
+        quizBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(menu.this, com.example.chung.voiceinput.Quiz.class));
             }
         });
     }

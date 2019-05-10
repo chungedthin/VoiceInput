@@ -26,10 +26,8 @@ public class voiceinput extends AppCompatActivity {
 
     private TextView txvResult;
     private TextView txvComment;
-    private Button backBtn;
     private String speech;
-    private ProgressDialog progressDialog;
-
+    private String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,47 +67,47 @@ public class voiceinput extends AppCompatActivity {
     }
 
     private void CallWebService(){
-    StringRequest stringRequest = new StringRequest(
-            Request.Method.POST,
-            Constants.URL_KEYWORD,
-            new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response){
-                    try{
-                        JSONArray arr = new JSONArray(response);
-                        if(arr!=null){
-                            JSONObject obj = arr.getJSONObject(0);
-                                String type = obj.getString("type");
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.POST,
+                Constants.URL_KEYWORD,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray arr = new JSONArray(response);
+                            if (arr != null) {
+                                for (int i = 0; i < arr.length(); i++) {
+                                    JSONObject obj = arr.getJSONObject(i);
+                                    if(obj.getString("keyword")==speech)
+                                        type = obj.getString("type");
+                                }
                                 txvComment.setText(type);
                             }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
 
-                } catch (JSONException e) {
-                        // unexpected response
-                        e.printStackTrace();
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(
+                                getApplicationContext(),
+                                error.getMessage(),
+                                Toast.LENGTH_LONG
+                        ).show();
                     }
                 }
-            },
-            new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    progressDialog.dismiss();
-                    Toast.makeText(
-                            getApplicationContext(),
-                            error.getMessage(),
-                            Toast.LENGTH_LONG
-                    ).show();
-                }
-            }
         ){
-        @Override
-        protected Map<String, String> getParams(){
-            Map<String, String> params = new HashMap<>();
-            params.put("s", speech);
-            return params;
-        }
+            @Override
+            protected Map<String, String> getParams(){
+                Map<String, String> params = new HashMap<>();
+                params.put("s", speech);
+                return params;
+            }
 
         };
-         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
-
+        RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
     }
 }

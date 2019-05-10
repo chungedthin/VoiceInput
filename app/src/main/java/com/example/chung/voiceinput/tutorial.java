@@ -34,7 +34,6 @@ public class tutorial extends AppCompatActivity {
 
         class GetJSON extends AsyncTask<Void, Void, String> {
 
-
             @Override
             protected void onPostExecute(String s) {
                 try {

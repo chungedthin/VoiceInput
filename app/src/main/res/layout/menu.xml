@@ -16,12 +16,6 @@
         android:text="Start Conversation"
         android:layout_weight="1"/>
 
-    <Button
-        android:id="@+id/reviewbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Review"
-        android:layout_weight="1"/>
 
     <Button
         android:id="@+id/howtoplaybtn"
@@ -34,6 +28,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tutorial"
+        android:layout_weight="1"/>
+
+    <Button
+        android:id="@+id/quizbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quiz"
         android:layout_weight="1"/>
 
     <Button

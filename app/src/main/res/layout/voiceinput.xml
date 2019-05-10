@@ -7,14 +7,25 @@
     android:layout_height="match_parent"
     tools:context=".voiceinput">
 
+
+    <TextView
+        android:id="@+id/s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
+        android:textStyle="normal"/>
+
     <TextView
         android:id="@+id/txvResult"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
-        android:textSize="26sp"
+        android:layout_marginTop="150dp"
+        android:textSize="20sp"
         android:textStyle="normal"/>
 
     <TextView
@@ -23,8 +34,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="200dp"
-        android:textSize="26sp"
+        android:layout_marginTop="250dp"
+        android:textSize="20sp"
         android:textStyle="normal"/>
 
     <ImageView
@@ -33,7 +44,7 @@
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="90dip"
+        android:layout_marginBottom="40dip"
         android:gravity="center"
         android:onClick="getSpeechInput"
         android:src="@drawable/mic"/>
