@@ -173,32 +173,32 @@ public class Quiz extends AppCompatActivity{
     }
 
     private List<QuizQuestion> returnParsedJsonObject(String result){
-        List<QuizQuestion> jsonObject = new ArrayList<QuizQuestion>();
-        JSONArray jsonArray = new JSONArray();
-        QuizQuestion newItemObject = null;
         try {
-            jsonArray= new JSONArray(result);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        for(int i = 0; i < jsonArray.length(); i++){
-            JSONObject jsonChildNode = null;
-            try {
-                jsonChildNode = jsonArray.getJSONObject(i);
-                int id = jsonChildNode.getInt("id");
-                String question = jsonChildNode.getString("question");
-                String answerOptions1 = jsonChildNode.getString("choice_a");
-                String answerOptions2 = jsonChildNode.getString("choice_b");
-                String answerOptions3 = jsonChildNode.getString("choice_c");
-                int answer = jsonChildNode.getInt("answer");
-                int score = jsonChildNode.getInt("score");
-                newItemObject = new QuizQuestion(id, question, answer, answerOptions1,answerOptions2,answerOptions3, score);
-                jsonObject.add(newItemObject);
-            } catch (JSONException e) {
-                e.printStackTrace();
+            List<QuizQuestion> jsonObject = new ArrayList<QuizQuestion>();
+            QuizQuestion newItemObject = null;
+            JSONArray jsonArray = new JSONArray(result);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonChildNode = null;
+                try {
+                    jsonChildNode = jsonArray.getJSONObject(i);
+                    int id = jsonChildNode.getInt("quiz_id");
+                    String question = jsonChildNode.getString("question");
+                    String answerOptions1 = jsonChildNode.getString("choice_a");
+                    String answerOptions2 = jsonChildNode.getString("choice_b");
+                    String answerOptions3 = jsonChildNode.getString("choice_c");
+                    int answer = jsonChildNode.getInt("answer");
+                    int score = jsonChildNode.getInt("score");
+                    newItemObject = new QuizQuestion(id, question, answer, answerOptions1, answerOptions2, answerOptions3, score);
+                    jsonObject.add(newItemObject);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
+            return jsonObject;
+        }  catch(Exception e){
+                e.printStackTrace();
         }
-        return jsonObject;
+        return  null;
     }
 
     private int getSelectedAnswer(int radioSelected){
