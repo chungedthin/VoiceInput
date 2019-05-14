@@ -49,7 +49,6 @@ public class menu extends AppCompatActivity {
                 SharedPrefManager.getInstance(menu.this).logout();
                 finish();
                 startActivity(new Intent(menu.this,login.class));
-
             }
         });
 

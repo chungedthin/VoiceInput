@@ -23,7 +23,6 @@ import org.json.JSONArray;
 
 
 public class voiceinput extends AppCompatActivity {
-
     private TextView txvResult;
     private TextView txvComment;
     private String speech;
@@ -78,8 +77,9 @@ public class voiceinput extends AppCompatActivity {
                             if (arr != null) {
                                 for (int i = 0; i < arr.length(); i++) {
                                     JSONObject obj = arr.getJSONObject(i);
-                                    if(obj.getString("keyword")==speech)
+                                    if(speech.equals(obj.getString("keyword")))
                                         type = obj.getString("type");
+                                        break;
                                 }
                                 txvComment.setText(type);
                             }

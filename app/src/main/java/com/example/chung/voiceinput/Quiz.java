@@ -1,13 +1,9 @@
-
 package com.example.chung.voiceinput;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -42,7 +38,7 @@ public class Quiz extends AppCompatActivity{
     private QuizQuestion firstQuestion;
     private int quizCount;
     private List<QuizQuestion> parsedObject;
-    int score;
+    int score = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +55,6 @@ public class Quiz extends AppCompatActivity{
         Button nextButton = (Button)findViewById(R.id.nextquiz);
         AsyncJsonObject asyncObject = new AsyncJsonObject();
         asyncObject.execute("");
-
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +86,6 @@ public class Quiz extends AppCompatActivity{
                     Toast.makeText(Quiz.this, "Your answer is wrong!!", Toast.LENGTH_LONG).show();
                     return;
                 }
-
             }
 
         });
@@ -114,7 +108,6 @@ public class Quiz extends AppCompatActivity{
     }
 
     private class AsyncJsonObject extends AsyncTask<String, Void, String> {
-        private ProgressDialog progressDialog;
         @Override
         protected String doInBackground(String... params) {
             HttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
@@ -123,26 +116,17 @@ public class Quiz extends AppCompatActivity{
             try {
                 HttpResponse response = httpClient.execute(httpPost);
                 jsonResult = inputStreamToString(response.getEntity().getContent()).toString();
-                System.out.println("Returned Json object " + jsonResult.toString());
             } catch (ClientProtocolException e) {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-
             }
             return jsonResult;
         }
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = ProgressDialog.show(Quiz.this, "Downloading Quiz","Wait....", true);
-        }
-
-        @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            progressDialog.dismiss();
             parsedObject = returnParsedJsonObject(result);
             if(parsedObject == null){
                 return;
@@ -160,13 +144,11 @@ public class Quiz extends AppCompatActivity{
             StringBuilder answer = new StringBuilder();
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             try {
-
                 while ((rLine = br.readLine()) != null) {
                     answer.append(rLine);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-
             }
             return answer;
         }
@@ -178,17 +160,16 @@ public class Quiz extends AppCompatActivity{
             QuizQuestion newItemObject = null;
             JSONArray jsonArray = new JSONArray(result);
             for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonChildNode = null;
+                JSONObject jsonNode = null;
                 try {
-                    jsonChildNode = jsonArray.getJSONObject(i);
-                    int id = jsonChildNode.getInt("quiz_id");
-                    String question = jsonChildNode.getString("question");
-                    String answerOptions1 = jsonChildNode.getString("choice_a");
-                    String answerOptions2 = jsonChildNode.getString("choice_b");
-                    String answerOptions3 = jsonChildNode.getString("choice_c");
-                    int answer = jsonChildNode.getInt("answer");
-                    int score = jsonChildNode.getInt("score");
-                    newItemObject = new QuizQuestion(id, question, answer, answerOptions1, answerOptions2, answerOptions3, score);
+                    jsonNode = jsonArray.getJSONObject(i);
+                    int id = jsonNode.getInt("quiz_id");
+                    String question = jsonNode.getString("question");
+                    String answerOptions1 = jsonNode.getString("choice_a");
+                    String answerOptions2 = jsonNode.getString("choice_b");
+                    String answerOptions3 = jsonNode.getString("choice_c");
+                    int answer = jsonNode.getInt("answer");
+                    newItemObject = new QuizQuestion(id, question, answer, answerOptions1, answerOptions2, answerOptions3);
                     jsonObject.add(newItemObject);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -202,12 +183,10 @@ public class Quiz extends AppCompatActivity{
     }
 
     private int getSelectedAnswer(int radioSelected){
-
         int answerSelected = 0;
         if(radioSelected == R.id.radio0){
             answerSelected = 1;
         }
-
         if(radioSelected == R.id.radio1){
             answerSelected = 2;
         }
