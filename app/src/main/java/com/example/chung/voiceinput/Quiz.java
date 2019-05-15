@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -69,7 +68,11 @@ public class Quiz extends AppCompatActivity{
                     currentQuizQuestion++;
                     if(currentQuizQuestion >= quizCount){
                         Toast.makeText(Quiz.this, "End of the Quiz Questions", Toast.LENGTH_LONG).show();
-                        quiz_score.setText("Your score is"+score);
+                        quizQuestion.setText("");
+                        optionOne.setEnabled(false);
+                        optionTwo.setEnabled(false);
+                        optionThree.setEnabled(false);
+                        quiz_score.setText("You answered "+score+" correct question");
                         return;
                     }
                     else{
@@ -87,7 +90,6 @@ public class Quiz extends AppCompatActivity{
                     return;
                 }
             }
-
         });
 
         previousButton.setOnClickListener(new View.OnClickListener() {
