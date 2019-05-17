@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:largeHeap="true"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true"
+        >
         <activity android:name=".Quiz"></activity>
         <activity
             android:name=".tutorial_content"
@@ -50,6 +51,9 @@
         <activity
         android:name=".tutorial"
         android:label="Tutorial" />
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
     </application>
 
 </manifest>
