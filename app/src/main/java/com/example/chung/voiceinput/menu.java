@@ -9,7 +9,6 @@ import android.widget.Button;
 public class menu extends AppCompatActivity {
 
     private Button startBtn;
-    private Button reviewBtn;
     private Button howToPlayBtn;
     private Button logoutBtn;
     private Button tutorialBtn;
@@ -29,7 +28,7 @@ public class menu extends AppCompatActivity {
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(menu.this, voiceinput.class);
+                Intent intent = new Intent(menu.this, situation.class);
                 startActivity(intent);
             }
         });

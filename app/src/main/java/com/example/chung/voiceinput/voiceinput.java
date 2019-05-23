@@ -1,10 +1,13 @@
 package com.example.chung.voiceinput;
 
+import android.app.ListActivity;
 import android.content.Intent;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
@@ -22,18 +25,39 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 
 
-public class voiceinput extends AppCompatActivity {
+public class voiceinput extends ListActivity {
     private TextView txvResult;
-    private TextView txvComment;
+    private TextView situation;
+    private TextView description;
+    private String sitNum;
     private String speech;
-    private String type;
+    private String reply;
+    String firstSpeech = getIntent().getStringExtra("FIRSTSPEECH");
+    ArrayList<String> listItems = new ArrayList<String>();
+    ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.voiceinput);
-        txvResult = (TextView) findViewById(R.id.txvResult);
-        txvComment = (TextView) findViewById(R.id.txvComment);
+        situation = (TextView) findViewById(R.id.txvSituation);
+        description = (TextView) findViewById(R.id.txvDescription);
+        adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,listItems);
+        setListAdapter(adapter);
+        listItems.add(firstSpeech);
+        adapter.notifyDataSetChanged();
+
+        try{
+            String sit = getIntent().getStringExtra("SITUATION");
+            String desc = getIntent().getStringExtra("DESCRIPTION");
+            String sitNo = getIntent().getStringExtra("SITUATIONNO");
+            sitNo = sitNum;
+            situation.setText(sit);
+            description.setText(desc);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void getSpeechInput(View view){
@@ -58,7 +82,9 @@ public class voiceinput extends AppCompatActivity {
                 if(resultCode == RESULT_OK && data != null){
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     txvResult.setText(result.get(0));
-                    speech = txvResult.getText() .toString();
+                    speech = txvResult.getText().toString();
+                    listItems.add(speech);
+                    adapter.notifyDataSetChanged();
                     CallWebService();
                 }
                 break;
@@ -68,20 +94,17 @@ public class voiceinput extends AppCompatActivity {
     private void CallWebService(){
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,
-                Constants.URL_KEYWORD,
+                "http://awch.myqnapcloud.com/fyp/api/keyword/chat_reply.php?s="+ sitNum +"&input="+ speech,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
                             JSONArray arr = new JSONArray(response);
                             if (arr != null) {
-                                for (int i = 0; i < arr.length(); i++) {
-                                    JSONObject obj = arr.getJSONObject(i);
-                                    if(speech.equals(obj.getString("keyword")))
-                                        type = obj.getString("type");
-                                        break;
-                                }
-                                txvComment.setText(type);
+                                JSONObject obj = arr.getJSONObject(0);
+                                reply = obj.getString("reply");
+                                listItems.add(reply);
+                                adapter.notifyDataSetChanged();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -106,7 +129,6 @@ public class voiceinput extends AppCompatActivity {
                 params.put("s", speech);
                 return params;
             }
-
         };
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
     }

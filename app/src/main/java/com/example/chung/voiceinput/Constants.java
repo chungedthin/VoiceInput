@@ -7,10 +7,7 @@ public class Constants {
     public static final String URL_REGISTER = ROOT_URL + "user/create.php";
     public static final String URL_LOGIN = ROOT_URL + "user/login.php";
     public static final String URL_TUTORIAL = ROOT_URL + "tutorial/read.php";
-    public static final String URL_KEYWORD = ROOT_URL + "keyword/search_by_keyword.php";
+    public static final String URL_SITUATION = ROOT_URL + "situation/read.php";
     public static final String URL_QUIZ = ROOT_URL + "quiz/read.php";
     public static final String URL_HOW = ROOT_URL + "howToPlay/read.php";
-
-    public static final String successKeyword = "User was created";
-    public static final String failKeyword = "Unable to create user";
 }
