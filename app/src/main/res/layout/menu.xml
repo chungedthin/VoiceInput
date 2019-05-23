@@ -13,7 +13,7 @@
         android:id="@+id/startbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start Conversation"
+        android:text="Practice"
         android:layout_weight="1"/>
 
 

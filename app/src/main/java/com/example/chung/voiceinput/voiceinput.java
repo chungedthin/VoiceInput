@@ -32,7 +32,7 @@ public class voiceinput extends ListActivity {
     private String sitNum;
     private String speech;
     private String reply;
-    String firstSpeech = getIntent().getStringExtra("FIRSTSPEECH");
+    private String firstSpeech;
     ArrayList<String> listItems = new ArrayList<String>();
     ArrayAdapter<String> adapter;
 
@@ -44,6 +44,7 @@ public class voiceinput extends ListActivity {
         description = (TextView) findViewById(R.id.txvDescription);
         adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,listItems);
         setListAdapter(adapter);
+        firstSpeech = getIntent().getStringExtra("FIRSTSPEECH");
         listItems.add(firstSpeech);
         adapter.notifyDataSetChanged();
 
