@@ -82,7 +82,7 @@ public class situation extends AppCompatActivity {
                 Intent newActivity = new Intent(situation.this,voiceinput.class);
                 newActivity.putExtra("SITUATIONNO", situationNo[i]);
                 newActivity.putExtra("SITUATION", situation[i]);
-                newActivity.putExtra("DESCRIPTIOB", description[i]);
+                newActivity.putExtra("DESCRIPTION", description[i]);
                 newActivity.putExtra("FIRSTSPEECH",firstSpeech[i]);
                 startActivity(newActivity);
             }

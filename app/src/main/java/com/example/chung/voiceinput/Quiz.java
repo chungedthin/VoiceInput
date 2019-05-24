@@ -28,7 +28,6 @@ import java.util.List;
 
 public class Quiz extends AppCompatActivity{
     private TextView quizQuestion;
-    private TextView quiz_score;
     private RadioGroup radioGroup;
     private RadioButton optionOne;
     private RadioButton optionTwo;
@@ -37,7 +36,6 @@ public class Quiz extends AppCompatActivity{
     private QuizQuestion firstQuestion;
     private int quizCount;
     private List<QuizQuestion> parsedObject;
-    int score = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +43,6 @@ public class Quiz extends AppCompatActivity{
         setContentView(R.layout.quiz);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         quizQuestion = (TextView)findViewById(R.id.quiz_question);
-        quiz_score = (TextView)findViewById(R.id.quiz_score);
         radioGroup = (RadioGroup)findViewById(R.id.radioGroup);
         optionOne = (RadioButton)findViewById(R.id.radio0);
         optionTwo = (RadioButton)findViewById(R.id.radio1);
@@ -64,7 +61,6 @@ public class Quiz extends AppCompatActivity{
                 if(userSelection == correctAns){
                     // correct
                     Toast.makeText(Quiz.this, "You got the answer correct", Toast.LENGTH_LONG).show();
-                    score += 1;
                     currentQuizQuestion++;
                     if(currentQuizQuestion >= quizCount){
                         Toast.makeText(Quiz.this, "End of the Quiz Questions", Toast.LENGTH_LONG).show();
@@ -72,7 +68,6 @@ public class Quiz extends AppCompatActivity{
                         optionOne.setEnabled(false);
                         optionTwo.setEnabled(false);
                         optionThree.setEnabled(false);
-                        quiz_score.setText("You answered "+score+" correct question");
                         return;
                     }
                     else{
