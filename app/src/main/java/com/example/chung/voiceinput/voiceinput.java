@@ -61,7 +61,7 @@ public class voiceinput extends ListActivity {
                         voiceBtn.setEnabled(true);
                     }
                 }else{
-                        Log.e("TTS","Inirialize failed");
+                        Log.e("TTS","Initialize failed");
                     }
                 }
         });
@@ -156,28 +156,10 @@ public class voiceinput extends ListActivity {
             }
     }
 
-        @Override
-        protected void onActivityResult(int requestCode, int resultCode, Intent data){
-            super.onActivityResult(requestCode,resultCode,data);
-
-            switch(requestCode){
-                case 10:
-                    if(resultCode == RESULT_OK && data != null){
-                        ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                        txvResult.setText(result.get(0));
-                        speech = txvResult.getText().toString();
-                        listItems.add(speech);
-                        adapter.notifyDataSetChanged();
-                        CallWebService();
-                    }
-                    break;
-            }
-        }
-
         private void CallWebService(){
             StringRequest stringRequest = new StringRequest(
                     Request.Method.POST,
-                    "http://awch.myqnapcloud.com/fyp/api/keyword/chat_reply.php?s="+ sitNum +"&input="+ speech,
+                    "http://awch.myqnapcloud.com/fyp/api/keyword/chat_reply.php?s="+ sitNum +"&input="+speech,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -189,7 +171,6 @@ public class voiceinput extends ListActivity {
                                     listItems.add(reply);
                                     adapter.notifyDataSetChanged();
                                     tts.speak(reply, TextToSpeech.QUEUE_FLUSH,null);
-
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
