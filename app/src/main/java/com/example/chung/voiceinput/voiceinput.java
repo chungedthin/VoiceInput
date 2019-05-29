@@ -48,6 +48,10 @@ public class voiceinput extends ListActivity {
     private String path;
     ArrayList<String> listItems = new ArrayList<String>();
     ArrayAdapter<String> adapter;
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,12 @@ public class voiceinput extends ListActivity {
         String sit = getIntent().getStringExtra("SITUATION");
         String desc = getIntent().getStringExtra("DESCRIPTION");
         String sitNo = getIntent().getStringExtra("SITUATIONNO");
+        try {
+            situation.setText(sit);
+            description.setText(desc);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         listItems.add(firstSpeech);
         adapter.notifyDataSetChanged();
         path = "http://awch.myqnapcloud.com/fyp/Audio/" + sitNo + "/情景" + sitNo + "-開場白.mp4";
@@ -115,9 +125,9 @@ public class voiceinput extends ListActivity {
             @Override
             public void onEvent(int i, Bundle bundle) {
             }
-
         });
-        findViewById(R.id.voice).setOnTouchListener(new View.OnTouchListener() {
+
+        voiceBtn.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
@@ -134,12 +144,7 @@ public class voiceinput extends ListActivity {
                 return false;
             }
         });
-            try {
-                situation.setText(sit);
-                description.setText(desc);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+
     }
 
         private void CallWebService(){
