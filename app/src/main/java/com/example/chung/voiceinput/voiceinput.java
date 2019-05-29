@@ -157,15 +157,20 @@ public class voiceinput extends ListActivity {
                                     keyword = obj.getString("keyword");
                                     listItems.add(reply);
                                     adapter.notifyDataSetChanged();
-                                    path = "http://awch.myqnapcloud.com/fyp/Audio/"+ sitNo + "/" + keyword + ".MP4";
-                                    playSpeech();
+                                    if (keyword == "No keyword"){
+                                        path = "http://awch.myqnapcloud.com/fyp/Audio/我唔知你講咩.MP4";
+                                        playSpeech();
+                                    }
+                                    else{
+                                        path = "http://awch.myqnapcloud.com/fyp/Audio/"+ sitNo + "/" + keyword + ".MP4";
+                                        playSpeech();
+                                    }
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
                     },
-
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
