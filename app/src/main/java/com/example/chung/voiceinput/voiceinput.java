@@ -3,6 +3,8 @@ package com.example.chung.voiceinput;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -38,11 +40,12 @@ public class voiceinput extends ListActivity {
     private TextView situation;
     private TextView description;
     private ImageButton voiceBtn;
-    private String sitNum;
+    private String sitNo;
     private String speech;
     private String reply;
+    private String keyword;
     private String firstSpeech;
-    private TextToSpeech tts;
+    private String path;
     ArrayList<String> listItems = new ArrayList<String>();
     ArrayAdapter<String> adapter;
 
@@ -50,22 +53,6 @@ public class voiceinput extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.voiceinput);
-        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if(status == TextToSpeech.SUCCESS) {
-                    int result = tts.setLanguage(new Locale("yue", "HK"));
-                    if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                        Log.e("TTS", "Language not supported");
-                    } else {
-                        voiceBtn.setEnabled(true);
-                    }
-                }else{
-                        Log.e("TTS","Initialize failed");
-                    }
-                }
-        });
-
         voiceBtn = (ImageButton) findViewById(R.id.voice);
         situation = (TextView) findViewById(R.id.txvSituation);
         description = (TextView) findViewById(R.id.txvDescription);
@@ -73,8 +60,13 @@ public class voiceinput extends ListActivity {
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
         setListAdapter(adapter);
         firstSpeech = getIntent().getStringExtra("FIRSTSPEECH");
+        String sit = getIntent().getStringExtra("SITUATION");
+        String desc = getIntent().getStringExtra("DESCRIPTION");
+        String sitNo = getIntent().getStringExtra("SITUATIONNO");
         listItems.add(firstSpeech);
         adapter.notifyDataSetChanged();
+        path = "http://awch.myqnapcloud.com/fyp/Audio/" + sitNo + "/情景" + sitNo + "-開場白.mp4";
+        playSpeech();
 
         final SpeechRecognizer mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
         final Intent mSpeechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -142,13 +134,7 @@ public class voiceinput extends ListActivity {
                 return false;
             }
         });
-
-
             try {
-                String sit = getIntent().getStringExtra("SITUATION");
-                String desc = getIntent().getStringExtra("DESCRIPTION");
-                String sitNo = getIntent().getStringExtra("SITUATIONNO");
-                sitNum = sitNo;
                 situation.setText(sit);
                 description.setText(desc);
             } catch (Exception e) {
@@ -159,7 +145,7 @@ public class voiceinput extends ListActivity {
         private void CallWebService(){
             StringRequest stringRequest = new StringRequest(
                     Request.Method.POST,
-                    "http://awch.myqnapcloud.com/fyp/api/keyword/chat_reply.php?s="+ sitNum +"&input="+speech,
+                    "http://awch.myqnapcloud.com/fyp/api/keyword/chat_reply.php?s="+ sitNo +"&input="+speech,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -168,9 +154,11 @@ public class voiceinput extends ListActivity {
                                 if (arr != null) {
                                     JSONObject obj = arr.getJSONObject(0);
                                     reply = obj.getString("reply");
+                                    keyword = obj.getString("keyword");
                                     listItems.add(reply);
                                     adapter.notifyDataSetChanged();
-                                    tts.speak(reply, TextToSpeech.QUEUE_FLUSH,null);
+                                    path = "http://awch.myqnapcloud.com/fyp/Audio/"+ sitNo + "/" + keyword + ".MP4";
+                                    playSpeech();
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -197,5 +185,18 @@ public class voiceinput extends ListActivity {
                 }
             };
             RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
+        }
+
+        public void playSpeech(){
+            try {
+            MediaPlayer player = new MediaPlayer();
+            player.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            player.setDataSource(path);
+            player.prepare();
+            player.start();
+            }
+            catch (Exception e) {
+            e.printStackTrace();
+            }
         }
     }
