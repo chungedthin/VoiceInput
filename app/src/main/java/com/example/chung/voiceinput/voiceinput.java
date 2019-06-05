@@ -40,7 +40,7 @@ public class voiceinput extends ListActivity {
     private TextView situation;
     private TextView description;
     private ImageButton voiceBtn;
-    private String sitNo;
+    private String sitNum;
     private String speech;
     private String reply;
     private String keyword;
@@ -48,10 +48,6 @@ public class voiceinput extends ListActivity {
     private String path;
     ArrayList<String> listItems = new ArrayList<String>();
     ArrayAdapter<String> adapter;
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,18 +60,9 @@ public class voiceinput extends ListActivity {
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
         setListAdapter(adapter);
         firstSpeech = getIntent().getStringExtra("FIRSTSPEECH");
-        String sit = getIntent().getStringExtra("SITUATION");
-        String desc = getIntent().getStringExtra("DESCRIPTION");
-        String sitNo = getIntent().getStringExtra("SITUATIONNO");
-        try {
-            situation.setText(sit);
-            description.setText(desc);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         listItems.add(firstSpeech);
         adapter.notifyDataSetChanged();
-        path = "http://awch.myqnapcloud.com/fyp/Audio/" + sitNo + "/情景" + sitNo + "-開場白.mp4";
+        path = "http://awch.myqnapcloud.com/fyp/Audio/" + sitNum + "/情景" + sitNum + "-開場白.mp4";
         playSpeech();
 
         final SpeechRecognizer mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
@@ -125,9 +112,9 @@ public class voiceinput extends ListActivity {
             @Override
             public void onEvent(int i, Bundle bundle) {
             }
-        });
 
-        voiceBtn.setOnTouchListener(new View.OnTouchListener() {
+        });
+        findViewById(R.id.voice).setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 switch (motionEvent.getAction()) {
@@ -144,69 +131,77 @@ public class voiceinput extends ListActivity {
                 return false;
             }
         });
-
+        try {
+            String sit = getIntent().getStringExtra("SITUATION");
+            String desc = getIntent().getStringExtra("DESCRIPTION");
+            situation.setText(sit);
+            description.setText(desc);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-        private void CallWebService(){
-            StringRequest stringRequest = new StringRequest(
-                    Request.Method.POST,
-                    "http://awch.myqnapcloud.com/fyp/api/keyword/chat_reply.php?s="+ sitNo +"&input="+speech,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            try {
-                                JSONArray arr = new JSONArray(response);
-                                if (arr != null) {
-                                    JSONObject obj = arr.getJSONObject(0);
-                                    reply = obj.getString("reply");
-                                    keyword = obj.getString("keyword");
-                                    listItems.add(reply);
-                                    adapter.notifyDataSetChanged();
-                                    if (keyword == "No keyword"){
-                                        path = "http://awch.myqnapcloud.com/fyp/Audio/我唔知你講咩.MP4";
-                                        playSpeech();
-                                    }
-                                    else{
-                                        path = "http://awch.myqnapcloud.com/fyp/Audio/"+ sitNo + "/" + keyword + ".MP4";
-                                        playSpeech();
-                                    }
+    private void CallWebService(){
+        final String sitNum = getIntent().getStringExtra("SITUATIONNO");
+        StringRequest stringRequest = new StringRequest(
+                Request.Method.POST,
+                "http://awch.myqnapcloud.com/fyp/api/keyword/chat_reply.php?s="+ sitNum +"&input="+speech,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray arr = new JSONArray(response);
+                            if (arr != null) {
+                                JSONObject obj = arr.getJSONObject(0);
+                                reply = obj.getString("reply");
+                                keyword = obj.getString("keyword");
+                                listItems.add(reply);
+                                adapter.notifyDataSetChanged();
+                                if (keyword == "No keyword"){
+                                    path = "http://awch.myqnapcloud.com/fyp/Audio/我唔知你講咩.MP4";
+                                    playSpeech();
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                                else{
+                                    path = "http://awch.myqnapcloud.com/fyp/Audio/"+ sitNum + "/" + keyword + ".MP4";
+                                    playSpeech();
+                                }
                             }
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(
-                                    getApplicationContext(),
-                                    error.getMessage(),
-                                    Toast.LENGTH_LONG
-                            ).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
                     }
-            ){
-                @Override
-                protected Map<String, String> getParams(){
-                    Map<String, String> params = new HashMap<>();
-                    params.put("s", speech);
-                    return params;
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(
+                                getApplicationContext(),
+                                error.getMessage(),
+                                Toast.LENGTH_LONG
+                        ).show();
+                    }
                 }
-            };
-            RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
-        }
+        ){
+            @Override
+            protected Map<String, String> getParams(){
+                Map<String, String> params = new HashMap<>();
+                params.put("s", speech);
+                return params;
+            }
+        };
+        RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
+    }
 
-        public void playSpeech(){
-            try {
+    public void playSpeech(){
+        try {
             MediaPlayer player = new MediaPlayer();
             player.setAudioStreamType(AudioManager.STREAM_MUSIC);
             player.setDataSource(path);
             player.prepare();
             player.start();
-            }
-            catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
-            }
         }
     }
+}
