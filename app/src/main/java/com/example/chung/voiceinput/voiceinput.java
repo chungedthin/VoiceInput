@@ -62,6 +62,7 @@ public class voiceinput extends ListActivity {
         firstSpeech = getIntent().getStringExtra("FIRSTSPEECH");
         listItems.add(firstSpeech);
         adapter.notifyDataSetChanged();
+        String sitNum = getIntent().getStringExtra("SITUATIONNO");
         path = "http://awch.myqnapcloud.com/fyp/Audio/" + sitNum + "/情景" + sitNum + "-開場白.mp4";
         playSpeech();
 
@@ -136,13 +137,13 @@ public class voiceinput extends ListActivity {
             String desc = getIntent().getStringExtra("DESCRIPTION");
             situation.setText(sit);
             description.setText(desc);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void CallWebService(){
-        final String sitNum = getIntent().getStringExtra("SITUATIONNO");
         StringRequest stringRequest = new StringRequest(
                 Request.Method.POST,
                 "http://awch.myqnapcloud.com/fyp/api/keyword/chat_reply.php?s="+ sitNum +"&input="+speech,
