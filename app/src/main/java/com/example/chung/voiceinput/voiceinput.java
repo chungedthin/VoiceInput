@@ -60,9 +60,9 @@ public class voiceinput extends ListActivity {
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listItems);
         setListAdapter(adapter);
         firstSpeech = getIntent().getStringExtra("FIRSTSPEECH");
+        sitNum = getIntent().getStringExtra("SITUATIONNO");
         listItems.add(firstSpeech);
         adapter.notifyDataSetChanged();
-        String sitNum = getIntent().getStringExtra("SITUATIONNO");
         path = "http://awch.myqnapcloud.com/fyp/Audio/" + sitNum + "/情景" + sitNum + "-開場白.mp4";
         playSpeech();
 
@@ -103,6 +103,7 @@ public class voiceinput extends ListActivity {
                 listItems.add(matches.get(0));
                 adapter.notifyDataSetChanged();
                 speech = matches.get(0);
+                sitNum = getIntent().getStringExtra("SITUATIONNO");
                 CallWebService();
             }
 
@@ -158,8 +159,8 @@ public class voiceinput extends ListActivity {
                                 keyword = obj.getString("keyword");
                                 listItems.add(reply);
                                 adapter.notifyDataSetChanged();
-                                if (keyword == "No keyword"){
-                                    path = "http://awch.myqnapcloud.com/fyp/Audio/我唔知你講咩.MP4";
+                                if (keyword.equals("No keyword")){
+                                    path = "http://awch.myqnapcloud.com/fyp/Audio/我唔知你講咩.mp4";
                                     playSpeech();
                                 }
                                 else{
